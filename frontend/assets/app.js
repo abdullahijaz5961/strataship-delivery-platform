@@ -1,9 +1,41 @@
 const API = window.API_BASE || 'http://localhost:8000/api';
-const summaryMap = {"stat-0": "services", "stat-1": "deployment_frequency", "stat-2": "verifying", "stat-3": "production_healthy"};
-const suffix = {};
-const columns = ["Service", "Version", "Environment", "Status"];
-const fallbackRows = [["gateway", "v2.8.1", "Production", "Healthy"], ["identity", "v1.14.0", "Production", "Healthy"], ["workflow-api", "v3.2.4", "Staging", "Verifying"]];
-function escapeHtml(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function renderRows(rows){document.getElementById('data-rows').innerHTML=rows.slice(0,6).map(row=>`<div class="data-row">${row.map((v,i)=>`<span class="${i===0?'primary-cell':''}">${escapeHtml(v)}</span>`).join('')}</div>`).join('');}
-async function load(){try{const [summaryResponse,listResponse]=await Promise.all([fetch(`${API}/summary`),fetch(`${API}/releases`)]);if(!summaryResponse.ok||!listResponse.ok)throw new Error('API unavailable');const summary=await summaryResponse.json();for(const [id,key] of Object.entries(summaryMap)){if(summary[key]!==undefined)document.getElementById(id).textContent=`${summary[key]}${suffix[id]||''}`;}const list=await listResponse.json();const normalized=list.map(r=>{return [r.service, `v${r.version}`, r.environment, r.status]});renderRows(normalized);document.getElementById('api-status').textContent='Live API connected · data refreshed successfully.';}catch(error){renderRows(fallbackRows);}}
+const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ago = value => value ? new Date(value).toLocaleString([], {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : 'In progress';
+
+function renderReleases(releases) {
+  document.getElementById('release-list').innerHTML = releases.slice(0,4).map(release => {
+    const running = release.status === 'verifying';
+    return `<div><span class="release-icon ${running?'running':'success'}">${running?'···':'✓'}</span><p><strong>${esc(release.service)} <b>v${esc(release.version)}</b></strong><small>${esc(release.environment)} · ${esc(release.strategy)} · ${ago(release.created_at)}</small></p></div>`;
+  }).join('');
+}
+
+function latestByService(releases) {
+  const catalog = new Map();
+  releases.forEach(release => {
+    if (!catalog.has(release.service)) catalog.set(release.service, release);
+  });
+  return [...catalog.values()];
+}
+
+function renderServices(releases) {
+  const owners = ['Platform Edge', 'Identity', 'Automation', 'Web Experience'];
+  document.getElementById('service-rows').innerHTML = latestByService(releases).map((release, index) => `<div class="table-row"><span><b>${esc(release.service)}</b><small>tracked release · ${esc(release.commit_sha)}</small></span><span>${owners[index % owners.length]}</span><span>v${esc(release.version)}</span><span><i class="health ${release.status === 'healthy' ? 'healthy' : 'degraded'}"></i>${esc(release.status)}</span><span>${ago(release.created_at)}</span></div>`).join('');
+}
+
+async function load() {
+  try {
+    const [summaryRes, releaseRes] = await Promise.all([fetch(`${API}/summary`), fetch(`${API}/releases`)]);
+    if (!summaryRes.ok || !releaseRes.ok) throw new Error('API unavailable');
+    const [summary, releases] = await Promise.all([summaryRes.json(), releaseRes.json()]);
+    if (summary.deployment_frequency !== undefined) document.getElementById('deployment-frequency').textContent = summary.deployment_frequency;
+    renderReleases(releases);
+    renderServices(releases);
+    document.getElementById('api-status').textContent = 'Live API connected · release records refreshed.';
+  } catch (_) { /* polished fixtures remain visible for static preview */ }
+}
+
+document.getElementById('service-search').addEventListener('input', event => {
+  const query = event.target.value.toLowerCase();
+  document.querySelectorAll('.table-row').forEach(row => row.hidden = !row.textContent.toLowerCase().includes(query));
+});
 load();

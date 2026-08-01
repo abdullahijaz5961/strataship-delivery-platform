@@ -1,1 +1,56 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Verified builds, environment state, and recovery controls."><title>StrataShip</title><link rel="stylesheet" href="assets/styles.css"></head><body><div class="shell"><aside class="sidebar"><div class="brand"><div class="logo">SS</div>StrataShip</div><nav><a class="nav-item active" href="#"><span class="nav-icon">01</span>Releases</a><a class="nav-item " href="#"><span class="nav-icon">02</span>Services</a><a class="nav-item " href="#"><span class="nav-icon">03</span>Environments</a><a class="nav-item " href="#"><span class="nav-icon">04</span>Rollback history</a><a class="nav-item " href="#"><span class="nav-icon">05</span>Policies</a></nav><div class="environment"><span>Environment</span><strong>Local development</strong></div></aside><main><header class="topbar"><div><p class="eyebrow">Release control plane</p><h1>Delivery overview</h1><p class="subtitle">Verified builds, environment state, and recovery controls.</p></div><div class="actions"><button class="button ghost">Export</button><button class="button primary">+ Create release</button></div></header><section class="stats"><article class="card stat"><div class="stat-label">Services</div><div class="stat-value" id="stat-0">24</div><div class="stat-trend">22 healthy</div></article><article class="card stat"><div class="stat-label">Deployments / week</div><div class="stat-value" id="stat-1">18.6</div><div class="stat-trend">+12% trend</div></article><article class="card stat"><div class="stat-label">Lead time</div><div class="stat-value" id="stat-2">14m</div><div class="stat-trend">p50 change-to-prod</div></article><article class="card stat"><div class="stat-label">Change failure</div><div class="stat-value" id="stat-3">3.1%</div><div class="stat-trend">within target</div></article></section><section class="content"><article class="card table-card"><div class="section-head"><div><h2>Release inventory</h2><p>Most recent environment activity</p></div><button class="button ghost">View all</button></div><div class="data-header"><span>Service</span><span>Version</span><span>Environment</span><span>Status</span></div><div id="data-rows"><div class="data-row"><span class="primary-cell">gateway</span><span class="">v2.8.1</span><span class="">Production</span><span class="">Healthy</span></div><div class="data-row"><span class="primary-cell">identity</span><span class="">v1.14.0</span><span class="">Production</span><span class="">Healthy</span></div><div class="data-row"><span class="primary-cell">workflow-api</span><span class="">v3.2.4</span><span class="">Staging</span><span class="">Verifying</span></div></div><p class="note" id="api-status">Using local fixture data. Live records load automatically when the API is available.</p></article><aside class="side"><article class="card"><h2>Pipeline throughput</h2><div class="bars"><i style="height:36px"></i><i style="height:58px"></i><i style="height:47px"></i><i style="height:92px"></i><i style="height:73px"></i><i style="height:118px"></i><i style="height:88px"></i></div><p class="note">Build-to-production activity</p></article><article class="card"><h2>Operational checks</h2><div class="check-row"><div><small>Security scan</small><strong>Passing</strong></div><span class="badge">Required</span></div><div class="check-row"><div><small>Integration tests</small><strong>342 / 342</strong></div><span class="badge">Passing</span></div><div class="check-row"><div><small>Production approval</small><strong>2 reviewers</strong></div><span class="badge">Enforced</span></div></article></aside></section></main></div><script src="assets/app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Release promotion, verification, and rollback control plane.">
+  <title>StrataShip · Release Control</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="global-bar">
+      <a class="brand" href="#" aria-label="StrataShip home"><span class="brand-mark"><i></i><i></i><i></i></span><span>StrataShip</span></a>
+      <nav><a class="active" href="#">Delivery</a><a href="#">Services</a><a href="#">Policies</a><a href="#">Audit</a></nav>
+      <div class="global-actions"><span class="environment"><b></b> Production connected</span><button class="icon-btn" title="Notifications">3</button><div class="avatar">RM</div></div>
+    </header>
+
+    <main>
+      <section class="hero-row">
+        <div><p class="eyebrow">RELEASE CONTROL PLANE</p><h1>Promote with evidence.<br><span>Recover without guesswork.</span></h1><p class="lede">A single view of artifact provenance, quality gates, runtime verification, and environment history.</p></div>
+        <div class="hero-actions"><button class="btn secondary">View audit log</button><button class="btn primary">Create release</button></div>
+      </section>
+
+      <section class="metric-grid">
+        <article><small>DEPLOYMENT FREQUENCY</small><strong id="deployment-frequency">18.6</strong><span>per week <em>↑ 12%</em></span></article>
+        <article><small>MEDIAN LEAD TIME</small><strong>14m</strong><span>commit to production</span></article>
+        <article><small>CHANGE FAILURE RATE</small><strong>3.1%</strong><span>target below 5%</span></article>
+        <article><small>MEAN RECOVERY TIME</small><strong>11m</strong><span>last 30 days</span></article>
+      </section>
+
+      <section class="workspace">
+        <article class="panel pipeline-panel">
+          <div class="panel-title"><div><p class="eyebrow">ACTIVE PROMOTION</p><h2>workflow-api <span>v3.2.5</span></h2></div><div class="risk"><span>Risk</span><b>43</b><small>moderate</small></div></div>
+          <div class="commit-line"><code>d61f7a3</code><span>blue-green</span><span>signed artifact</span><span>liam.brooks</span></div>
+          <div class="pipeline">
+            <div class="stage complete"><div class="stage-head"><i>✓</i><div><small>BUILD</small><strong>Artifact verified</strong></div><span>02:28</span></div><ul><li><b>342 / 342</b> tests passed</li><li>SBOM attached</li><li>Signature verified</li></ul></div>
+            <div class="connector complete"></div>
+            <div class="stage active"><div class="stage-head"><i>2</i><div><small>STAGING</small><strong>Runtime verification</strong></div><span class="pulse">LIVE</span></div><ul><li><b>0.61%</b> error rate</li><li><b>490 ms</b> p95 latency</li><li>12 / 15 min observed</li></ul><div class="progress"><span style="width:80%"></span></div></div>
+            <div class="connector"></div>
+            <div class="stage locked"><div class="stage-head"><i>3</i><div><small>PRODUCTION</small><strong>Awaiting approval</strong></div><span>LOCKED</span></div><ul><li>2 reviewers required</li><li>Change window open</li><li>Canary strategy ready</li></ul></div>
+          </div>
+          <div class="verification-strip"><div><span class="signal good"></span><small>Artifact provenance</small><strong>Verified</strong></div><div><span class="signal good"></span><small>Vulnerability policy</small><strong>Passing</strong></div><div><span class="signal warn"></span><small>Runtime health</small><strong>Observing</strong></div><button class="btn primary">Review promotion</button></div>
+        </article>
+
+        <aside class="right-rail">
+          <article class="panel env-card"><div class="panel-title compact"><div><p class="eyebrow">ENVIRONMENT HEALTH</p><h2>Deployment map</h2></div><span class="status-ok">All reachable</span></div><div id="environment-list" class="env-list"><div><span class="env-dot dev"></span><p><strong>Development</strong><small>v3.2.5 · healthy</small></p><em>OPEN</em></div><div><span class="env-dot stage"></span><p><strong>Staging</strong><small>v3.2.5 · verifying</small></p><em>ACTIVE</em></div><div><span class="env-dot prod"></span><p><strong>Production</strong><small>v3.2.4 · healthy</small></p><em>PROTECTED</em></div></div></article>
+          <article class="panel activity-card"><div class="panel-title compact"><div><p class="eyebrow">RECENT ACTIVITY</p><h2>Release ledger</h2></div><button class="text-btn">View all</button></div><div id="release-list" class="release-list"><div><span class="release-icon success">✓</span><p><strong>edge-gateway <b>v2.8.2</b></strong><small>Production · canary · 4m ago</small></p></div><div><span class="release-icon success">✓</span><p><strong>identity-core <b>v1.14.1</b></strong><small>Staging · rolling · 2h ago</small></p></div><div><span class="release-icon running">···</span><p><strong>workflow-api <b>v3.2.5</b></strong><small>Staging · verification active</small></p></div></div></article>
+        </aside>
+      </section>
+
+      <section class="panel service-table"><div class="panel-title"><div><p class="eyebrow">SERVICE CATALOG</p><h2>Delivery posture</h2></div><div class="table-actions"><input id="service-search" type="search" placeholder="Search services"><button class="btn secondary">Filters</button></div></div><div class="table-head"><span>Service</span><span>Owner</span><span>Current version</span><span>Health</span><span>Last promotion</span></div><div id="service-rows"><div class="table-row"><span><b>edge-gateway</b><small>tier-1 · platform/edge-gateway</small></span><span>Platform Edge</span><span>v2.8.1</span><span><i class="health healthy"></i>Healthy</span><span>4 min ago</span></div><div class="table-row"><span><b>identity-core</b><small>tier-1 · security/identity-core</small></span><span>Identity</span><span>v1.14.0</span><span><i class="health healthy"></i>Healthy</span><span>2 hours ago</span></div><div class="table-row"><span><b>workflow-api</b><small>tier-2 · automation/workflow-api</small></span><span>Automation</span><span>v3.2.4</span><span><i class="health degraded"></i>Degraded</span><span>Verification active</span></div></div><p id="api-status" class="api-status">Live API connects automatically at <code>localhost:8000</code>.</p></section>
+    </main>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>
