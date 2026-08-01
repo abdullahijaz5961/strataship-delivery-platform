@@ -176,8 +176,4 @@ GitHub Actions runs both checks on pushes and pull requests so the repository ex
 - [ ] Change-window enforcement and release approvals
 - [ ] PostgreSQL persistence and immutable audit metadata
 
-## Security, contribution, and license
 
-Use `.env` only for local configuration and never commit credentials. See [`SECURITY.md`](SECURITY.md) for disclosure guidance and [`CONTRIBUTING.md`](CONTRIBUTING.md) for verification expectations.
-
-Released under the [MIT License](LICENSE).
